@@ -3,9 +3,10 @@ import sys
 import copy
 from parser import classify_logs
 
-
 import time
 from parser import classify_single_log
+
+from ai_engine import generate_insight
 
 # --------------------for real time monitoring--------------------
 def monitor_logs(file_path):
@@ -35,19 +36,19 @@ def monitor_logs(file_path):
                 continue
 
             log_type = classify_single_log(line)
-
-            log_type = classify_single_log(line)
             counts[log_type] += 1
 
+            # 🔥 PRINT LOG
             print(f"[{log_type}] {line.replace(log_type + ': ', '').strip()}")
 
-            # 🚨 Alert logic (trigger once)
+            # 🔥 ADD AI HERE (THIS IS THE CHANGE)
+            insight = generate_insight(line)
+            print(f"💡 AI Insight: {insight}")
+
+            # 🚨 Alert logic
             if counts["ERROR"] >= 2:
                 print("🚨 CRITICAL ALERT: Multiple errors detected!")
                 counts["ERROR"] = 0
-
-
-
 
 
 def main():
